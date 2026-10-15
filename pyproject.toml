@@ -1,0 +1,42 @@
+[project]
+name = "sealmark"
+version = "0.1.0"
+description = "电子印章水印：输入自己的文字生成印章，并盖到图片 / PDF 上"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "Pillow>=10.0",
+    "pymupdf>=1.24",
+    "PySide6>=6.6",
+    "PySide6-Fluent-Widgets>=1.11",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-exclude = [".venv", "build", "dist"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM", "RUF"]
+ignore = [
+    "RUF001", # 中文标点/全角符号是房规
+    "RUF002",
+    "RUF003",
+    "E501",   # 行宽交给 formatter
+    "RUF046", # 防御性取整：调用方可能传 float（字号、毫米换算都是浮点）
+    "RUF057",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Qt 约定：槽函数与 Signal 必须 camelCase，被重写的方法名也带大写
+"sealmark/gui/*.py" = ["N802", "N803", "N806", "N815"]
+# 几何代码里 W/H/D、t0/t1 是通用记法，硬改成小写反而难读
+"sealmark/seal.py" = ["N803", "N806"]
+"sealmark/stamp.py" = ["N803", "N806"]
+"sealmark/svg.py" = ["N803", "N806"]
+"tests/*.py" = ["N802", "SLF001"]
+"tools/*.py" = ["E402"]                # sys.path 之后再 import
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
