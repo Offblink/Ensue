@@ -6,7 +6,7 @@ __all__ = ["MainWindow"]
 
 
 def __getattr__(name: str):
-    """延迟导入 MainWindow：暴露 ``sealmark.gui.MainWindow`` 但不逼调用方装 Qt。"""
+    """延迟导入 MainWindow：暴露 ``ensue.gui.MainWindow`` 但不逼调用方装 Qt。"""
     if name == "MainWindow":
         from .main_window import MainWindow
 

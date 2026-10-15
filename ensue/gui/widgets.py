@@ -3,12 +3,43 @@
 from __future__ import annotations
 
 from PIL import Image
-from PySide6.QtCore import QRect, Qt, Signal
+from PySide6.QtCore import QEvent, QObject, QRect, Qt, Signal
 from PySide6.QtGui import QColor, QImage, QPainter, QPainterPath, QPen, QPixmap
 from PySide6.QtWidgets import QColorDialog, QHBoxLayout, QSizePolicy, QVBoxLayout, QWidget
 from qfluentwidgets import BodyLabel, CaptionLabel, CardWidget, Slider, StrongBodyLabel
 
 PAPER = QColor("#FBFAF5")  # 「纸」底色：浅暖白，两种主题下都像纸
+
+
+class _WheelBlocker(QObject):
+    """吞掉滚轮事件的过滤器。
+
+    两个细节都要：``ignore()`` 让事件继续冒泡给外层滚动区（页面照常滚），
+    ``return True`` 才是「这个控件别处理」——只 ignore 不 return True 的话
+    控件本体照样会把值滚掉。
+    """
+
+    def eventFilter(self, obj, event):  # Qt 命名
+        if event.type() == QEvent.Type.Wheel:
+            event.ignore()
+            return True
+        return super().eventFilter(obj, event)
+
+
+_WHEEL_BLOCKER: _WheelBlocker | None = None
+
+
+def block_wheel(*widgets: QWidget) -> None:
+    """让这些控件（连同内部子控件，如微调框里的输入框）不再响应滚轮。
+
+    用户常年被"滚页面时把数值滚变了"咬；数值类控件一律装这个护栏。
+    """
+    global _WHEEL_BLOCKER
+    if _WHEEL_BLOCKER is None:
+        _WHEEL_BLOCKER = _WheelBlocker()
+    for widget in widgets:
+        for target in (widget, *widget.findChildren(QWidget)):
+            target.installEventFilter(_WHEEL_BLOCKER)
 
 
 def pil_to_pixmap(img: Image.Image) -> QPixmap:
@@ -52,6 +83,7 @@ class SliderRow(QWidget):
         self._name.setMinimumWidth(76)
         self._slider = Slider(Qt.Horizontal, self)
         self._slider.setRange(0, max(1, int(round((self._max - self._min) / self._step))))
+        block_wheel(self._slider)  # 滑块不吃滚轮：滚页面时别把参数滚歪
         self._slider.setMinimumWidth(120)
         self._value = BodyLabel(self)
         self._value.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
@@ -247,6 +279,7 @@ __all__ = [
     "PaperPreview",
     "SliderRow",
     "SwatchButton",
+    "block_wheel",
     "card",
     "hint",
     "pil_to_pixmap",

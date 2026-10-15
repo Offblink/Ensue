@@ -1,4 +1,4 @@
-# SealMark · 电子印章水印
+# Ensue · 电子印章水印
 
 输入自己的文字，生成一枚印章，再把它盖到图片或 PDF 上。全程本地运行，不上传任何文件。
 
@@ -8,6 +8,7 @@
 - **加盖水印**：水印来源可以是「当前印章」「自己的印章图片（可自动抠白底）」「纯文字」；单处盖章或
   平铺铺满；位置、大小、角度、不透明度、间距可调，还能在预览上直接拖动。支持图片与 PDF 混批处理。
 - **PDF 是叠加，不是转图**：文字层与矢量内容原样保留。
+- **数值/滑块/下拉都不吃鼠标滚轮**：滚页面时不会顺手把参数滚歪（要改值请拖动或点击输入）。
 
 ![印章制作](assets/预览-印章制作.png)
 
@@ -58,8 +59,8 @@
 界面之外的部分不依赖 Qt，可以直接写脚本：
 
 ```python
-from sealmark.seal import SealSpec, render
-from sealmark.stamp import StampOptions, stamp_file
+from ensue.seal import SealSpec, render
+from ensue.stamp import StampOptions, stamp_file
 
 spec = SealSpec(arc_text="示例科技有限公司", center_text="合同专用章",
                 bottom_prefix="(22)", bottom_text="1101011001124")
@@ -81,17 +82,21 @@ for path in ["合同.pdf", "扫描件.jpg"]:
 
 ```
 app.py                 入口（双击 run.bat 走这里）
-sealmark/seal.py       印章渲染：比例排版 + 墨迹蒙版 + 做旧（纯 PIL，不依赖 Qt）
-sealmark/svg.py        矢量导出（与光栅版共用同一批版式常量）
-sealmark/stamp.py      加盖：图片合成 + PDF 叠加层 + 页码解析
-sealmark/specs.py      方案 JSON 与设置持久化
-sealmark/gui/          Qt 界面（唯一依赖 PySide6 的一层）
-tools/make_icon.py     用印章渲染器画应用图标
-tests/                 55 条用例：尺寸/透明底/确定性/弧排方向/PDF 文字层与几何
+ensue/seal.py          印章渲染：比例排版 + 墨迹蒙版 + 做旧（纯 PIL，不依赖 Qt）
+ensue/svg.py           矢量导出（与光栅版共用同一批版式常量）
+ensue/stamp.py         加盖：图片合成 + PDF 叠加层 + 页码解析
+ensue/specs.py         方案 JSON 与设置持久化
+ensue/gui/             Qt 界面（唯一依赖 PySide6 的一层）
+assets/icon.ico        应用/任务栏图标（7 档尺寸）；icon-preview.png 是各档预览
+tools/make_icon.py     从品牌图生成上面的图标（裁白边、去白底、居中成正方形）
+tests/                 62 条用例：尺寸/透明底/确定性/弧排方向/PDF 文字层与几何/滚轮护栏
 ```
 
 ## 开发门禁
 
 ```powershell
-pwsh -File scripts/check.ps1      # ruff check + ruff format --check + pytest
+pwsh -File scripts/check.ps1      # ruff check + ruff format --check + pytest（自动用 .venv 跑测试）
 ```
+
+测试必须用 `.venv` 的解释器：本机全局 `qfluentwidgets` 是 PyQt5 版，和 PySide6 界面混用会报
+「SliderRow 不是 QWidget」。跑错解释器时测试模块会直接给出这句提示并跳过。

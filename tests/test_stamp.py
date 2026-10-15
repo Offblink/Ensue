@@ -5,8 +5,8 @@ from __future__ import annotations
 import pytest
 from PIL import Image
 
-from sealmark.seal import SealSpec, render
-from sealmark.stamp import (
+from ensue.seal import SealSpec, render
+from ensue.stamp import (
     StampOptions,
     compose_overlay,
     output_path,

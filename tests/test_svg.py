@@ -6,9 +6,9 @@ import xml.etree.ElementTree as ET
 
 import pytest
 
-from sealmark import seal
-from sealmark.seal import SealSpec, pixel_size, star_points
-from sealmark.svg import render_svg
+from ensue import seal
+from ensue.seal import SealSpec, pixel_size, star_points
+from ensue.svg import render_svg
 
 SVG_NS = "{http://www.w3.org/2000/svg}"
 

@@ -9,7 +9,7 @@ from pathlib import Path
 
 from .seal import SealSpec
 
-APP_DIR = Path(os.environ.get("APPDATA", Path.home())) / "SealMark"
+APP_DIR = Path(os.environ.get("APPDATA", Path.home())) / "Ensue"
 SETTINGS_PATH = APP_DIR / "settings.json"
 
 
@@ -40,7 +40,7 @@ def save_spec(spec: SealSpec, path: str | Path) -> Path:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
-        json.dumps({"app": "SealMark", "version": 1, "seal": spec_to_dict(spec)}, ensure_ascii=False, indent=2),
+        json.dumps({"app": "Ensue", "version": 1, "seal": spec_to_dict(spec)}, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
     return path

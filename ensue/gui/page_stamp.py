@@ -53,7 +53,7 @@ from ..stamp import (
     stamp_file,
     text_mark,
 )
-from .widgets import ColorRow, LabeledRow, SliderRow, card, hint, pil_to_pixmap
+from .widgets import ColorRow, LabeledRow, SliderRow, block_wheel, card, hint, pil_to_pixmap
 
 PREVIEW_PX = 520
 PICK_FILTER = "图片与 PDF (*.png *.jpg *.jpeg *.bmp *.webp *.tif *.tiff *.pdf);;所有文件 (*)"
@@ -398,6 +398,7 @@ class StampPage(QWidget):
             hint("输出文件名 = 原文件名 +「_已盖章」，原文件不动；重复处理会覆盖上次的输出。"),
         )
 
+        block_wheel(self.text_font)  # 数值/下拉不吃滚轮
         panel.addWidget(box1)
         panel.addWidget(box2)
         panel.addWidget(box3)

@@ -1,5 +1,5 @@
 [project]
-name = "sealmark"
+name = "ensue"
 version = "0.1.0"
 description = "电子印章水印：输入自己的文字生成印章，并盖到图片 / PDF 上"
 readme = "README.md"
@@ -29,12 +29,12 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 # Qt 约定：槽函数与 Signal 必须 camelCase，被重写的方法名也带大写
-"sealmark/gui/*.py" = ["N802", "N803", "N806", "N815"]
+"ensue/gui/*.py" = ["N802", "N803", "N806", "N815"]
 # 几何代码里 W/H/D、t0/t1 是通用记法，硬改成小写反而难读
-"sealmark/seal.py" = ["N803", "N806"]
-"sealmark/stamp.py" = ["N803", "N806"]
-"sealmark/svg.py" = ["N803", "N806"]
-"tests/*.py" = ["N802", "SLF001"]
+"ensue/seal.py" = ["N803", "N806"]
+"ensue/stamp.py" = ["N803", "N806"]
+"ensue/svg.py" = ["N803", "N806"]
+"tests/*.py" = ["N802", "E402", "SLF001"]
 "tools/*.py" = ["E402"]                # sys.path 之后再 import
 
 [tool.pytest.ini_options]

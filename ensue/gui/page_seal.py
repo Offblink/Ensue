@@ -36,7 +36,7 @@ from qfluentwidgets import (
 from .. import fonts, specs
 from ..seal import CENTER_PRESETS, COLOR_PRESETS, SealSpec, pixel_size, render, render_png_bytes
 from ..svg import render_svg
-from .widgets import ColorRow, LabeledRow, PaperPreview, SliderRow, card, hint, pil_to_pixmap
+from .widgets import ColorRow, LabeledRow, PaperPreview, SliderRow, block_wheel, card, hint, pil_to_pixmap
 
 PREVIEW_PX = 360
 SEAL_TYPES: tuple[tuple[str, str], ...] = (
@@ -199,6 +199,16 @@ class SealPage(QWidget):
         panel.addWidget(box4)
         panel.addStretch(1)
 
+        # 数值/下拉一律不吃滚轮（页面滚动时最容易误触的就是它们）
+        block_wheel(
+            self.type_box,
+            self.center_preset,
+            self.font_box,
+            self.size_spin,
+            self.aspect_spin,
+            self.border_spin,
+            self.columns_spin,
+        )
         scroll = SingleDirectionScrollArea(orient=Qt.Vertical)
         scroll.setWidget(holder)
         scroll.setWidgetResizable(True)

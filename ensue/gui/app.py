@@ -14,7 +14,7 @@ from qfluentwidgets import Theme, setTheme, setThemeColor
 
 from .main_window import MainWindow
 
-AUMID = "Offblink.SealMark"
+AUMID = "Offblink.Ensue"
 ICON = Path(__file__).resolve().parent.parent.parent / "assets" / "icon.ico"
 
 
@@ -24,7 +24,7 @@ def main() -> int:
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(AUMID)
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
     app = QApplication(sys.argv)
-    app.setApplicationName("SealMark")  # 标题栏身份；别再设 displayName，否则窗口标题会被追加一遍
+    app.setApplicationName("Ensue")  # 标题栏身份；别再设 displayName，否则窗口标题会被追加一遍
     if ICON.exists():
         app.setWindowIcon(QIcon(str(ICON)))
     setTheme(Theme.AUTO)

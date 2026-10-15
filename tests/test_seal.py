@@ -5,8 +5,8 @@ from __future__ import annotations
 import pytest
 from PIL import Image
 
-from sealmark import seal
-from sealmark.seal import SealSpec, arc_placements, render
+from ensue import seal
+from ensue.seal import SealSpec, arc_placements, render
 
 
 def ink_ratio(img: Image.Image, threshold: int = 40) -> float:

@@ -8,7 +8,7 @@ from qfluentwidgets import FluentIcon, FluentWindow, NavigationItemPosition
 from .page_seal import SealPage
 from .page_stamp import StampPage
 
-APP_TITLE = "电子印章水印 · SealMark"
+APP_TITLE = "Ensue · 电子印章水印"
 
 
 class MainWindow(FluentWindow):

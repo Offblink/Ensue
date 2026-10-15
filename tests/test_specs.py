@@ -6,8 +6,8 @@ import json
 
 import pytest
 
-from sealmark import specs
-from sealmark.seal import SealSpec
+from ensue import specs
+from ensue.seal import SealSpec
 
 
 def test_roundtrip(tmp_path):
